@@ -15,33 +15,71 @@ if not EFCRSaves then
 	EFCRSaves = { scale = 0, x = 0, y = 0, dim = false }
 end
 
-local buttons = {
-	{ x={2,2}, y={-2,-2}, w=32, h=32, tex = "repic28", text="Get ready to repick!"},
-	{ x={34,34}, y={-2,-194}, w=64, h=32, tex = "aroof.blp", text="EFC Alliance roof!"},
-	{ x={98,98}, y={-2,-2}, w=32, h=32, tex = "cap28", text="Get ready to cap!"},
-	{ x={2,98}, y={-34,-162}, w=32, h=32, tex = "agy.blp", text="EFC Alliance graveyard!"},
-	{ x={34,66}, y={-34,-162}, w=32, h=32, tex = "afr.blp", text="EFC Alliance flag room!"},
-	{ x={66,34}, y={-34,-162}, w=32, h=32, tex = "abalc.blp", text="EFC Alliance balcony!"},
-	{ x={98,2}, y={-34,-162}, w=32, h=32, tex = "aramp.blp", text="EFC Alliance ramp!"},
-	{ x={2,98}, y={-66,-130}, w=32, h=32, tex = "aresto.blp", text="EFC Alliance resto hut!"},
-	{ x={34,66}, y={-66,-130}, w=32, h=32, tex = "afence.blp", text="EFC Alliance fence!"},
-	{ x={66,34}, y={-66,-130}, w=32, h=32, tex = "atun.blp", text="EFC Alliance tunnel!"},
-	{ x={98,2}, y={-66,-130}, w=32, h=32, tex = "azerk.blp", text="EFC Alliance zerker hut!"},
-	{ x={18,18}, y={-98,-98}, w=32, h=32, tex = "west.blp", text="EFC west!"},
-	{ x={50,50}, y={-98,-98}, w=32, h=32, tex = "mid.blp", text="EFC midfield!"},
-	{ x={82,82}, y={-98,-98}, w=32, h=32, tex = "east.blp", text="EFC east!"},
-	{ x={2,98}, y={-130,-66}, w=32, h=32, tex = "hzerk.blp", text="EFC Horde zerker hut!"},
-	{ x={34,66}, y={-130,-66}, w=32, h=32, tex = "htun.blp", text="EFC Horde tunnel!"},
-	{ x={66,34}, y={-130,-66}, w=32, h=32, tex = "hfence.blp", text="EFC Horde fence!"},
-	{ x={98,2}, y={-130,-66}, w=32, h=32, tex = "hresto.blp", text="EFC Horde resto hut!"},
-	{ x={2,98}, y={-162,-34}, w=32, h=32, tex = "hramp.blp", text="EFC Horde ramp!"},
-	{ x={34,66}, y={-162,-34}, w=32, h=32, tex = "hbalc.blp", text="EFC Horde balcony!"},
-	{ x={66,34}, y={-162,-34}, w=32, h=32, tex = "hfr.blp", text="EFC Horde flag room!"},
-	{ x={98,2}, y={-162,-34}, w=32, h=32, tex = "hgy.blp", text="EFC Horde graveyard!"},
-	{ x={34,34}, y={-194,-2}, w=64, h=32, tex = "hroof.blp", text="EFC Horde roof!"},
-}
-local iconPath = "Interface\\Addons\\EFCReport\\Icons\\"
+function EFCReport:GetButtons()
+	local faction = UnitFactionGroup("player") == "Horde" and "H" or "A"
 
+	local fcPrefix = "Going "
+	local efcPrefix = "EFC @ "
+	local ourPrefix = ""
+	local enemyPrefix = "E"
+	local locs = {
+		["gy"] = "GY",
+		["fr"] = "FR",
+		["balc"] = "BALC",
+		["ramp"] = "RAMP",
+		["leaf"] = "LEAF",
+		["fence"] = "FENCE/TOT",
+		["tun"] = "TUN",
+		["zerk"] = "ZERK",
+		["roof"] = "ROOF",
+	}
+
+	local buttons = {
+		{ x = {2,2}, y = {-2,-2}, w = 32, h = 32, tex = "repic28", text = "=== REPICK ===" },
+		{ faction = "A", loc = locs.roof, x = {34,34}, y = faction == "H" and {-2,-194} or {-194,-2}, w = 64, h = 32, tex = "aroof.blp" },
+		{ x = {98,98}, y = {-2,-2}, w = 32, h = 32, tex = "cap28", text = "=== CAP ===" },
+
+		{ faction = "A", loc = locs.gy, x = faction == "H" and {2,98} or {98,2}, y = faction == "H" and {-34,-162} or {-162,-34}, w = 32, h = 32, tex = "agy.blp" },
+		{ faction = "A", loc = locs.fr, x = faction == "H" and {34,66} or {66,34}, y = faction == "H" and {-34,-162} or {-162,-34}, w  =32, h = 32, tex = "afr.blp" },
+		{ faction = "A", loc = locs.balc, x = faction == "H" and {66,34} or {34,66}, y = faction == "H" and {-34,-162} or {-162,-34}, w = 32, h = 32, tex = "abalc.blp" },
+		{ faction = "A", loc = locs.ramp, x = faction == "H" and {98,2} or {2,98}, y = faction == "H" and {-34,-162} or {-162,-34}, w = 32, h = 32, tex = "aramp.blp" },
+		{ faction = "A", loc = locs.leaf, x = faction == "H" and {2,98} or {98,2}, y = faction == "H" and {-66,-130} or {-130,-66}, w = 32, h = 32, tex = "aresto.blp" },
+		{ faction = "A", loc = locs.fence, x = faction == "H" and {34,66} or {66,34}, y = faction == "H" and {-66,-130} or {-130,-66}, w = 32, h = 32, tex = "afence.blp" },
+		{ faction = "A", loc = locs.tun, x = faction == "H" and {66,34} or {34,66}, y = faction == "H" and {-66,-130} or {-130,-66}, w = 32, h = 32, tex = "atun.blp" },
+		{ faction = "A", loc = locs.zerk, x = faction == "H" and {98,2} or {2,98}, y = faction == "H" and {-66,-130} or {-130,-66}, w = 32, h = 32, tex = "azerk.blp" },
+
+		{ loc = "WEST", x = faction == "H" and {18,18} or {82,82}, y={-98,-98}, w=32, h=32, tex = faction == "H" and "west.blp" or "east.blp"},
+		{ loc = "MID", x = {50,50}, y={-98,-98}, w=32, h=32, tex = "mid.blp", text = "MID"},
+		{ loc = "EAST", x = faction == "H" and {82,82} or {18,18}, y={-98,-98}, w=32, h=32, tex = faction == "H" and "east.blp" or "west.blp"},
+
+		{ faction = "H", loc = locs.zerk, x= faction == "H" and {2,98} or {98,2}, y= faction == "H" and {-130,-66} or {-66,-130}, w=32, h=32, tex = "hzerk.blp"},
+		{ faction = "H", loc = locs.tun, x= faction == "H" and {34,66} or {66,34}, y= faction == "H" and {-130,-66} or {-66,-130}, w=32, h=32, tex = "htun.blp"},
+		{ faction = "H", loc = locs.fence, x= faction == "H" and {66,34} or {34,66}, y= faction == "H" and {-130,-66} or {-66,-130}, w=32, h=32, tex = "hfence.blp"},
+		{ faction = "H", loc = locs.leaf, x= faction == "H" and {98,2} or {2,98}, y= faction == "H" and {-130,-66} or {-66,-130}, w=32, h=32, tex = "hresto.blp"},
+		{ faction = "H", loc = locs.ramp, x= faction == "H" and {2,98} or {98,2}, y= faction == "H" and {-162,-34} or {-34,-162}, w=32, h=32, tex = "hramp.blp"},
+		{ faction = "H", loc = locs.balc, x= faction == "H" and {34,66} or {66,34}, y= faction == "H" and {-162,-34} or {-34,-162}, w=32, h=32, tex = "hbalc.blp"},
+		{ faction = "H", loc = locs.fr, x= faction == "H" and {66,34} or {34,66}, y= faction == "H" and {-162,-34} or {-34,-162}, w=32, h=32, tex = "hfr.blp"},
+		{ faction = "H", loc = locs.gy, x= faction == "H" and {98,2} or {2,98}, y= faction == "H" and {-162,-34} or {-34,-162}, w=32, h=32, tex = "hgy.blp"},
+		{ faction = "H", loc = locs.roof, x={34,34}, y= faction == "H" and {-194,-2} or {-2, -194}, w=64, h=32, tex = "hroof.blp"},
+	}
+
+	for i,btn in pairs(buttons) do
+		if btn.loc ~= nil then
+			local loc = btn.loc
+
+			if btn.faction ~= nil then
+				loc = (btn.faction == faction and ourPrefix or enemyPrefix) .. btn.loc
+			end
+
+			btn.fcText = fcPrefix .. " " .. loc
+			btn.efcText = efcPrefix .. " " .. loc
+		end
+	end
+
+	return buttons;
+end
+
+local iconPath = "Interface\\Addons\\EFCReport\\Icons\\"
 
 function Print(arg1)
 	DEFAULT_CHAT_FRAME:AddMessage("|cffCC121D EFCR|r "..(arg1 or ""))
@@ -53,9 +91,7 @@ function EFCReport:OnEvent()
 		Print("Loaded")
 	elseif event == 'PLAYER_ENTERING_WORLD' or event == 'ZONE_CHANGED_NEW_AREA' then
 		if GetRealZoneText() == "Warsong Gulch" then
-			if EFCReport.created == false then
-				EFCReport.create()
-			end
+			EFCReport.create()
 			EFCReport.EFCFrame:Show()
 			EFCReport.enabled = true
 		elseif EFCReport.enabled then
@@ -79,9 +115,7 @@ SlashCmdList['EFCReport'] = function (msg)
 			EFCReport.enabled = false
 			EFCReport.EFCFrame:Hide()
 		else
-			if EFCReport.created == false then
-				EFCReport.create()
-			end
+			EFCReport.create()
 			EFCReport.EFCFrame:Show()
 			EFCReport.enabled = true
 		end
@@ -129,20 +163,26 @@ end
 
 -- Create the EFCReport dialog
 function EFCReport:create()
+	if (EFCReport.EFCFrame ~= nil) then
+		EFCReport.EFCFrame:Hide()
+		EFCReport.enabled = false
+    end
+
 	-- Option Frame
 	local frame = CreateFrame("Frame", "EFCRFrame")
-	local ix
+	local ix = 1
 
 	EFCReport.EFCFrame = frame
 
 	tinsert(UISpecialFrames,"EFCReport")
 
-	if UnitFactionGroup("player") == "Horde" then
-		ix = 1
-		EFCReport.Language = "Orcish"
-	else
-		ix = 1
-		EFCReport.Language = "Common"
+	EFCReport.Language = 'Common'
+	local numSkills = GetNumSkillLines();
+	for i = 1, numSkills do
+		local skill = GetSkillLineInfo(i);
+		if string.find(skill, 'Orcish') then
+			EFCReport.Language = 'Orcish'
+		end
 	end
 
 	-- Set scale, size and position
@@ -204,17 +244,23 @@ function EFCReport:create()
 	frame:SetScript("OnLeave", EFCReport_OnLeave)
 
 	-- Create the buttons
+	local buttons = EFCReport:GetButtons()
 	for i,btn in pairs(buttons) do
 		local btn_frame = CreateFrame("Button", btn.text, frame)
 		btn_frame:SetPoint("TOPLEFT", frame, "TOPLEFT", btn.x[ix], btn.y[ix])
 		btn_frame.id = i
 		btn_frame:SetWidth(btn.w)
 		btn_frame:SetHeight(btn.h)
-		-- Handle clicks
+
+		-- Left click: EFC report
+		btn_frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 		btn_frame:SetScript("OnClick", function()
-			--Print(buttons[this.id].text)
-			SendChatMessage(buttons[this.id].text ,"Battleground" , EFCReport.Language)
+			local b = buttons[this.id]
+			local text = (arg1 == "LeftButton" and b.efcText or b.fcText) or b.text
+			faction = UnitFactionGroup
+			SendChatMessage(text,"BATTLEGROUND" , EFCReport.Language)
 		end)
+
 		btn_frame:SetBackdrop( {
 			bgFile = iconPath..btn.tex,
 		} );
